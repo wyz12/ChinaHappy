@@ -1,8 +1,11 @@
 package com.zxwl.chinahappy;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -151,7 +154,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 finish();
 
                             }else{
-                                Toast.makeText(MainActivity.this, "修改失败", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(MainActivity.this, "登录失败", Toast.LENGTH_SHORT).show();
                             }
 
                         } catch (JSONException e) {
@@ -164,4 +167,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
     }
+
+
+
 }

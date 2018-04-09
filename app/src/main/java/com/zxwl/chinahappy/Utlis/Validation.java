@@ -1,5 +1,8 @@
 package com.zxwl.chinahappy.Utlis;
 
+import android.app.Activity;
+import android.content.pm.PackageManager;
+import android.support.v4.app.ActivityCompat;
 import android.widget.Toast;
 
 import com.zxwl.chinahappy.Activity.RegisterActivity;
@@ -15,6 +18,32 @@ import cn.smssdk.SMSSDK;
  */
 
 public class Validation {
+
+    /**
+     * 6.0权限
+     */
+    private static final int REQUEST_EXTERNAL_STORAGE = 1;
+    private static String[] PERMISSIONS_STORAGE = {
+            "android.permission.ACCESS_COARSE_LOCATION",
+            "android.permission.ACCESS_FINE_LOCATION",
+            "android.permission.READ_PHONE_STATE"};
+
+
+
+    public static void verifyStoragePermissions(Activity activity) {
+
+        try {
+            //检测是否有写的权限
+            int permission = ActivityCompat.checkSelfPermission(activity,
+                    "android.permission.WRITE_EXTERNAL_STORAGE");
+            if (permission != PackageManager.PERMISSION_GRANTED) {
+                // 没有写的权限，去申请写的权限，会弹出对话框
+                ActivityCompat.requestPermissions(activity, PERMISSIONS_STORAGE,REQUEST_EXTERNAL_STORAGE);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     //------------------常量定义
     /**
      * Email正则表达式="^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
@@ -152,6 +181,15 @@ public class Validation {
      */
     public static boolean StrPass(String str) {
         return 5<str.length() ;
+    }
+
+    /**
+     * 判断名称是否正确
+     * @param str
+     * @return boolean
+     */
+    public static boolean StrName(String str) {
+        return 5>str.length()&1<str.length();
     }
     /**
      * 判断两次密码是否一致

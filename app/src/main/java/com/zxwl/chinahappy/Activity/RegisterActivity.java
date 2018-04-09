@@ -1,14 +1,17 @@
 package com.zxwl.chinahappy.Activity;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.telephony.TelephonyManager;
 import android.util.Log;
@@ -45,6 +48,10 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
      * 请输入手机号
      */
     private EditText mPhone;
+    /**
+     * 请给自己一个称呼
+     */
+    private EditText mName;
     /**
      * 请输入密码
      */
@@ -103,6 +110,17 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
      * 两次输入密码不一致
      */
     private TextView mPromptcfpass;
+    /**
+     * 称呼不能超过四个字
+     */
+    private TextView mPromptname;
+    private String name;
+    private @SuppressLint("MissingPermission")
+    String szImei;
+    private @SuppressLint("MissingPermission")
+    Location location;
+    private double jd;
+    private double wd;
 
 
     @Override
@@ -118,6 +136,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         mPass = (EditText) findViewById(R.id.pass);
         mCfpass = (EditText) findViewById(R.id.cfpass);
         mCode = (EditText) findViewById(R.id.code);
+        mName = (EditText) findViewById(R.id.name);
         mHqcode = (Button) findViewById(R.id.hqcode);
         mHqcode.setOnClickListener(this);
         mSumbit = (Button) findViewById(R.id.sumbit);
@@ -126,6 +145,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         mPromptphone = (TextView) findViewById(R.id.Promptphone);
         mPromptpass = (TextView) findViewById(R.id.Promptpass);
         mPromptcfpass = (TextView) findViewById(R.id.Promptcfpass);
+        mPromptname = (TextView) findViewById(R.id.Promptname);
 
         UserPrompt();
 
@@ -188,6 +208,23 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 }
             }
         });
+
+        mName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                Log.e("TTT",hasFocus+"");
+                if(!hasFocus){
+                    name = mName.getText().toString();
+                    if (!Validation.StrNotNull(name)) {
+                        mPromptname.setText("请输入名称");
+                        mPromptname.setVisibility(View.VISIBLE);
+                    }else{
+                        mPromptname.setVisibility(View.GONE);
+                    }
+
+                }
+            }
+        });
     }
 
     @Override
@@ -202,6 +239,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                     Toast.makeText(this, "请输入正确的手机号码", Toast.LENGTH_SHORT).show();
                     return;
                 }
+
                 if(Prompt){
                     hann.postDelayed(runn, 1000);
                     SMSSDK.getVerificationCode("86", mPhone.getText().toString()); // 发送验证码给号码的 phoneNumber 的手机
@@ -219,6 +257,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 pass1 = mPass.getText().toString();
                 pass2 = mCfpass.getText().toString();
                 code = mCode.getText().toString();
+                name = mName.getText().toString();
                 if (!Validation.isMobile(phone)) {
                     Toast.makeText(this, "请输入正确的手机号码", Toast.LENGTH_SHORT).show();
                     return;
@@ -231,8 +270,23 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                     Toast.makeText(this, "两次输入的密码不一致", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                submitCode("86", phone, code);
+                if (!Validation.StrNotNull(name)) {
+                    Toast.makeText(this, "请输入名称", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+//                submitCode("86", phone, code);
 
+
+
+                if (Build.VERSION.SDK_INT>= Build.VERSION_CODES.M) {
+                    ActivityCompat.requestPermissions(this,
+                            new String[]{"android.permission.ACCESS_COARSE_LOCATION",
+                                    "android.permission.ACCESS_FINE_LOCATION",
+                                    "android.permission.READ_PHONE_STATE"},
+                      1);
+                }else {
+                    register();
+                }
                 break;
         }
     }
@@ -285,7 +339,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
             public void afterEvent(int event, int result, Object data) {
                 if (result == SMSSDK.RESULT_COMPLETE) {
-                    register();
+//                    register();
                 } else {
                     runOnUiThread(new Runnable() {
                         @Override
@@ -305,6 +359,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
 
     //      注册账号的提交
+    @SuppressLint("MissingPermission")
     private void register() {
 
 
@@ -318,16 +373,24 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         }else if(providers.contains(LocationManager.NETWORK_PROVIDER)){
             //如果是Network
             locationProvider = LocationManager.NETWORK_PROVIDER;
-        }else{
-            Toast.makeText(this, "没有可用的位置提供器", Toast.LENGTH_SHORT).show();
-            return ;
         }
-        //获取Location
-        @SuppressLint("MissingPermission") Location location = locationManager.getLastKnownLocation(locationProvider);
+
+        try {
+            location = locationManager.getLastKnownLocation(locationProvider);
+            jd = location.getLatitude();
+            wd = location.getLongitude();
+        }catch (Exception e){
+
+        }
+
+        try {
+            TelephonyManager TelephonyMgr = (TelephonyManager)getSystemService(TELEPHONY_SERVICE);
+            szImei = TelephonyMgr.getDeviceId();
+        }catch (Exception e){
+
+        }
 
 
-        TelephonyManager TelephonyMgr = (TelephonyManager)getSystemService(TELEPHONY_SERVICE);
-        @SuppressLint("MissingPermission") String szImei = TelephonyMgr.getDeviceId();
         String  model= android.os.Build.MODEL;
 
         String  xtbb=android.os.Build.VERSION.RELEASE;
@@ -346,10 +409,10 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 .add("action", "register")
                 .add("phone", phone)
                 .add("pass", pass1)
-                .add("name", phone)
+                .add("name", name)
                 .add("version",version+"-"+xtbb)
-                .add("equipment",model+"-"+szImei )
-                .add("address",location.getLatitude()+"-"+location.getLongitude() )
+                .add("equipment",model+"-"+szImei)
+                .add("address",jd+"-"+wd)
                 .build();
         HttpUtils.getInstance().sendPost(HttpApi.ADDRESS, body, new Callback() {
             @Override
@@ -386,4 +449,25 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             }
         });
     }
-}
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        switch (requestCode) {
+            case 1:
+
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                        register();
+                } else {
+                    Toast.makeText(this, "请同意权限", Toast.LENGTH_SHORT).show();
+
+                }
+
+                break;
+        }
+    }
+
+
+    }

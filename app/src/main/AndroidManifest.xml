@@ -18,7 +18,8 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
-    <user-permission android:name="android.permission.RECORD_AUDIO"/>
+
+    <user-permission android:name="android.permission.RECORD_AUDIO" />
 
     <application
         android:name="com.mob.MobApplication"
@@ -49,7 +50,8 @@
             android:name=".Activity.RegisterActivity"
             android:launchMode="singleInstance" />
         <activity android:name=".Activity.HomeActivity" />
-        <activity android:name=".Activity.PassBackActivity"></activity>
+        <activity android:name=".Activity.PassBackActivity" />
+        <activity android:name=".Activity.Main2Activity"></activity>
     </application>
 
 </manifest>
