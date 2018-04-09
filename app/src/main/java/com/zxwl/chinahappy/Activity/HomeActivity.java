@@ -94,7 +94,6 @@ public class HomeActivity extends AppCompatActivity {
                             String username = datas.getJSONObject(0).getString("username");
                             String money = datas.getJSONObject(0).getString("money");
                             String branch = datas.getJSONObject(0).getString("branch");
-
                             Log.e("TTTT",username+money+branch);
 
                         } catch (JSONException e) {
