@@ -1,7 +1,6 @@
 package com.zxwl.chinahappy.Activity;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,11 +8,9 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.zxwl.chinahappy.MainActivity;
 import com.zxwl.chinahappy.R;
 import com.zxwl.chinahappy.Utlis.HttpApi;
 import com.zxwl.chinahappy.Utlis.HttpUtils;
@@ -133,7 +130,7 @@ public class HomeActivity extends AppCompatActivity {
                             mName.setText("用户名："+username);
                             mMoney.setText("金钱："+money);
                             mBranch.setText("积分："+branch);
-//                            startActivity(new Intent(HomeActivity.this, Main2Activity.class));
+                            startActivity(new Intent(HomeActivity.this, TigermacActivity.class));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

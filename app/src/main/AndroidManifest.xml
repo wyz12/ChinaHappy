@@ -51,7 +51,8 @@
             android:launchMode="singleInstance" />
         <activity android:name=".Activity.HomeActivity" />
         <activity android:name=".Activity.PassBackActivity" />
-        <activity android:name=".Activity.Main2Activity"></activity>
+        <activity android:name=".Activity.TigermacActivity"
+            android:screenOrientation="landscape"></activity>
     </application>
 
 </manifest>
