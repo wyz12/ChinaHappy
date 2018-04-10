@@ -133,7 +133,7 @@ public class HomeActivity extends AppCompatActivity {
                             mName.setText("用户名："+username);
                             mMoney.setText("金钱："+money);
                             mBranch.setText("积分："+branch);
-                            startActivity(new Intent(HomeActivity.this, Main2Activity.class));
+//                            startActivity(new Intent(HomeActivity.this, Main2Activity.class));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
