@@ -1,7 +1,6 @@
 package com.zxwl.chinahappy.Activity;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -21,7 +20,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.zxwl.chinahappy.MainActivity;
 import com.zxwl.chinahappy.R;
 import com.zxwl.chinahappy.Utlis.HttpApi;
 import com.zxwl.chinahappy.Utlis.HttpUtils;
@@ -432,7 +430,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                             Log.e("TTTT",string);
                             boolean register_result = jsonObject.getBoolean("register_result");
                             if(register_result){
-                                startActivity(new Intent(RegisterActivity.this, MainActivity.class));
+                                startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
                                 finish();
                                 Toast.makeText(RegisterActivity.this, "注册成功请登录", Toast.LENGTH_SHORT).show();
                             }else{

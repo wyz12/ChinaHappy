@@ -35,4 +35,5 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.4.0'
     implementation files('libs/SMSSDK-3.1.1.jar')
     implementation files('libs/SDKWrapper-2018.0201.1609.jar')
+    compile 'com.android.support:design:26.0.0-alpha1'
 }

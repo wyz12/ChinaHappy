@@ -1,11 +1,8 @@
-package com.zxwl.chinahappy;
+package com.zxwl.chinahappy.Activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -14,9 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.zxwl.chinahappy.Activity.HomeActivity;
-import com.zxwl.chinahappy.Activity.PassBackActivity;
-import com.zxwl.chinahappy.Activity.RegisterActivity;
+import com.zxwl.chinahappy.R;
 import com.zxwl.chinahappy.Utlis.HttpApi;
 import com.zxwl.chinahappy.Utlis.HttpUtils;
 import com.zxwl.chinahappy.Utlis.Validation;
@@ -32,7 +27,7 @@ import okhttp3.FormBody;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
     /**
      * 注册
@@ -64,10 +59,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         initView();
 
-        pref = MainActivity.this.getSharedPreferences("UserData",MODE_PRIVATE);
+        pref = LoginActivity.this.getSharedPreferences("UserData",MODE_PRIVATE);
         String name = pref.getString("phone","");
         if(!Validation.StrisNull(name)){
-            startActivity(new Intent(MainActivity.this, HomeActivity.class));
+            startActivity(new Intent(LoginActivity.this, HomeActivity.class));
             finish();
         }
 
@@ -93,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 //                跳转修改密码页面
             case R.id.passback:
-                startActivity(new Intent(MainActivity.this, PassBackActivity.class));
+                startActivity(new Intent(LoginActivity.this, PassBackActivity.class));
                 break;
 //                登录提交
             case R.id.sumbit:
@@ -115,7 +110,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 //                跳转注册页面
             case R.id.register:
-                startActivity(new Intent(MainActivity.this, RegisterActivity.class));
+                startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
                 break;
         }
     }
@@ -131,7 +126,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         HttpUtils.getInstance().sendPost(HttpApi.ADDRESS, body, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                Toast.makeText(MainActivity.this, "网络不好请等待", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, "网络不好请等待", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -149,12 +144,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 SharedPreferences.Editor editor = pref.edit();
                                 editor.putString("phone",phone);
                                 editor.commit();
-                                Toast.makeText(MainActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(MainActivity.this, HomeActivity.class));
+                                Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(LoginActivity.this, HomeActivity.class));
                                 finish();
 
                             }else{
-                                Toast.makeText(MainActivity.this, "登录失败", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(LoginActivity.this, "登录失败", Toast.LENGTH_SHORT).show();
                             }
 
                         } catch (JSONException e) {

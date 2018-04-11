@@ -2,25 +2,27 @@ package com.zxwl.chinahappy.Activity;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.TextView;
-import android.widget.Toast;
 
+import com.zxwl.chinahappy.Adapter.VpAdapter;
+import com.zxwl.chinahappy.Fragment.MerchantsFragemnt;
+import com.zxwl.chinahappy.Fragment.MoneyFragment;
+import com.zxwl.chinahappy.Fragment.MovieFragment;
+import com.zxwl.chinahappy.Fragment.MyFragment;
 import com.zxwl.chinahappy.R;
 import com.zxwl.chinahappy.Utlis.HttpApi;
 import com.zxwl.chinahappy.Utlis.HttpUtils;
 import com.zxwl.chinahappy.Utlis.Validation;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.Call;
@@ -33,28 +35,48 @@ public class HomeActivity extends AppCompatActivity {
 
     private LocationManager locationManager;
     private String locationProvider;
-    /**
-     * 用户名：阿昭你好
-     */
-    private TextView mName;
-    /**
-     * 金钱：120.01
-     */
-    private TextView mMoney;
-    /**
-     * 积分；100000000
-     */
-    private TextView mBranch;
+
     private double jd;
     private double wd;
+    private ViewPager mViewpager;
+    private TabLayout mTab;
+    private ArrayList<String> list;
+    private ArrayList<Fragment> fragments;
 
+
+    @SuppressLint("NewApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         initView();
         ObtainLocation();
-        hqxx();
+
+
+        list = new ArrayList<>();
+        fragments = new ArrayList<>();
+
+        list.add("娱乐");
+        list.add("看片");
+        list.add("好货");
+        list.add("我的");
+
+        fragments.add(new MoneyFragment());
+        fragments.add(new MovieFragment());
+        fragments.add(new MerchantsFragemnt());
+        fragments.add(new MyFragment());
+
+        VpAdapter vpAdapter = new VpAdapter(getSupportFragmentManager(), fragments, list);
+        mViewpager.setAdapter(vpAdapter);
+        mTab.setupWithViewPager(mViewpager);
+        TabLayout.Tab  tab_one = mTab.getTabAt(0);
+        TabLayout.Tab  tab_two = mTab.getTabAt(1);
+        TabLayout.Tab  tab_three = mTab.getTabAt(2);
+        TabLayout.Tab  tab_four = mTab.getTabAt(3);
+        tab_one.setIcon(R.mipmap.b_77);
+        tab_two.setIcon(R.mipmap.coconut);
+        tab_three.setIcon(R.mipmap.apple);
+        tab_four.setIcon(R.mipmap.alarm);
     }
 
     //    获取位置信息并上传
@@ -75,77 +97,34 @@ public class HomeActivity extends AppCompatActivity {
             @SuppressLint("MissingPermission") Location location = locationManager.getLastKnownLocation(locationProvider);
             jd = location.getLatitude();
             wd = location.getLongitude();
-        }catch (Exception e){
+        } catch (Exception e) {
             Validation.verifyStoragePermissions(this);
             return;
         }
 
-            SharedPreferences userData = getSharedPreferences("UserData", MODE_PRIVATE);
-            String phone = userData.getString("phone", null);
-            RequestBody body = new FormBody.Builder()
-                    .add("action", "updateaddress")
-                    .add("phone", phone)
-                    .add("address", jd + "-" + wd)
-                    .build();
-            HttpUtils.getInstance().sendPost(HttpApi.ADDRESS, body, new Callback() {
-                @Override
-                public void onFailure(Call call, IOException e) {
-                }
-                @Override
-                public void onResponse(Call call, Response response) throws IOException {
-                }
-            });
-
-
-    }
-
-    //  获取用户信息
-    private void hqxx() {
         SharedPreferences userData = getSharedPreferences("UserData", MODE_PRIVATE);
         String phone = userData.getString("phone", null);
         RequestBody body = new FormBody.Builder()
-                .add("action", "hqxx")
+                .add("action", "updateaddress")
                 .add("phone", phone)
+                .add("address", jd + "-" + wd)
                 .build();
         HttpUtils.getInstance().sendPost(HttpApi.ADDRESS, body, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                Toast.makeText(HomeActivity.this, "网络不好请等待", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                final String string = response.body().string();
-
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            JSONObject jsonObject = new JSONObject(string);
-
-                            JSONArray datas = jsonObject.getJSONArray("datas");
-                            String username = datas.getJSONObject(0).getString("username");
-                            String money = datas.getJSONObject(0).getString("money");
-                            String branch = datas.getJSONObject(0).getString("branch");
-                            mName.setText("用户名："+username);
-                            mMoney.setText("金钱："+money);
-                            mBranch.setText("积分："+branch);
-                            startActivity(new Intent(HomeActivity.this, TigermacActivity.class));
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-
-
             }
         });
+
+
     }
 
 
     private void initView() {
-        mName = (TextView) findViewById(R.id.name);
-        mMoney = (TextView) findViewById(R.id.money);
-        mBranch = (TextView) findViewById(R.id.branch);
+        mViewpager = (ViewPager) findViewById(R.id.viewpager);
+        mTab = (TabLayout) findViewById(R.id.tab);
     }
 }

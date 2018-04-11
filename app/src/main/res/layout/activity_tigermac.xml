@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
-    tools:context="com.zxwl.chinahappy.Activity.TigermacActivity">
+    tools:context="com.zxwl.chinahappy.GameActivity.TigermacActivity">
 
 
     <LinearLayout
@@ -266,6 +266,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
                 <TextView
+                   android:id="@+id/train_code"
                     android:layout_weight="1"
                     android:text="期号"
                     android:textColor="#ffffff"
@@ -273,6 +274,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
                 <TextView
+                    android:id="@+id/integral"
                     android:layout_weight="1"
                     android:gravity="center_vertical"
                     android:textColor="#ffffff"
@@ -292,24 +294,28 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
                     <ImageView
+                        android:id="@+id/yzt_apple"
                         android:background="@drawable/shape_yz_k"
                         android:src="@mipmap/apple"
                         android:layout_weight="1"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
                     <ImageView
+                        android:id="@+id/yzt_orange"
                         android:background="@drawable/shape_yz_k"
                         android:src="@mipmap/orange"
                         android:layout_weight="1"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
                     <ImageView
+                        android:id="@+id/yzt_watermelons"
                         android:background="@drawable/shape_yz_k"
                         android:src="@mipmap/watermelons"
                         android:layout_weight="1"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
                     <ImageView
+                    android:id="@+id/yzt_coconut"
                         android:background="@drawable/shape_yz_k"
                         android:src="@mipmap/coconut"
                         android:layout_weight="1"
@@ -367,24 +373,28 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
                     <ImageView
+                        android:id="@+id/yzt_77"
                         android:background="@drawable/shape_yz_k"
                         android:src="@mipmap/z77"
                         android:layout_weight="1"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
                     <ImageView
+                        android:id="@+id/yzt_star"
                         android:background="@drawable/shape_yz_k"
                         android:src="@mipmap/star"
                         android:layout_weight="1"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
                     <ImageView
+                        android:id="@+id/yzt_alarm"
                         android:background="@drawable/shape_yz_k"
                         android:src="@mipmap/alarm"
                         android:layout_weight="1"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
                     <ImageView
+                        android:id="@+id/yzt_bar"
                         android:background="@drawable/shape_yz_k"
                         android:src="@mipmap/bar"
                         android:layout_weight="1"
@@ -444,7 +454,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
                     <Button
-
+                        android:id="@+id/money10"
                         android:gravity="center"
                         android:layout_margin="5dp"
                         android:textStyle="bold"
@@ -455,17 +465,18 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
                     <Button
+                        android:id="@+id/money50"
                         android:gravity="center"
                         android:text="50"
                         android:layout_margin="5dp"
                         android:textStyle="bold"
                         android:textSize="15dp"
-
                         android:layout_weight="1"
                         android:background="@drawable/shape_yz_mz"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
                     <Button
+                        android:id="@+id/money100"
                         android:gravity="center"
                         android:layout_margin="5dp"
                         android:textStyle="bold"
@@ -476,6 +487,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
                     <Button
+                        android:id="@+id/money500"
                         android:layout_margin="5dp"
                         android:textStyle="bold"
                         android:textSize="15dp"
@@ -493,6 +505,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
                     <Button
+                        android:id="@+id/explain"
                         android:text="倍率说明"
                         android:background="@drawable/shape_yz_mz"
                         android:layout_weight="1"
@@ -500,6 +513,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
                     <Button
+                        android:id="@+id/money_con"
                         android:background="@drawable/shape_yz_mz"
                         android:text="确认"
                         android:layout_weight="1"

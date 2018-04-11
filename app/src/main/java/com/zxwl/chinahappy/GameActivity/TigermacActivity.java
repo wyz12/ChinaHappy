@@ -1,4 +1,4 @@
-package com.zxwl.chinahappy.Activity;
+package com.zxwl.chinahappy.GameActivity;
 
 import android.graphics.Color;
 import android.os.Bundle;

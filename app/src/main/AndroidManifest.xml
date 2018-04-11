@@ -30,13 +30,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
-            android:launchMode="singleInstance">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            android:name=".Activity.LoginActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait">
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <meta-data
@@ -48,11 +46,20 @@
 
         <activity
             android:name=".Activity.RegisterActivity"
+            android:configChanges="orientation|keyboardHidden"
             android:launchMode="singleInstance" />
         <activity android:name=".Activity.HomeActivity" />
         <activity android:name=".Activity.PassBackActivity" />
-        <activity android:name=".Activity.TigermacActivity"
-            android:screenOrientation="landscape"></activity>
+        <activity
+            android:name=".GameActivity.TigermacActivity"
+            android:screenOrientation="landscape" />
+        <activity android:name=".Activity.StatrtPageActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

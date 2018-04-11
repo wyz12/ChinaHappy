@@ -1,23 +1,15 @@
 package com.zxwl.chinahappy.Activity;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.zxwl.chinahappy.MainActivity;
 import com.zxwl.chinahappy.R;
 import com.zxwl.chinahappy.Utlis.HttpApi;
 import com.zxwl.chinahappy.Utlis.HttpUtils;
@@ -27,7 +19,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.List;
 
 import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
@@ -199,7 +190,7 @@ public class PassBackActivity extends AppCompatActivity implements View.OnClickL
                             Log.e("TTTT",string);
                             boolean register_result = jsonObject.getBoolean("modify_result");
                             if(register_result){
-                                startActivity(new Intent(PassBackActivity.this, MainActivity.class));
+                                startActivity(new Intent(PassBackActivity.this, LoginActivity.class));
                                 finish();
                                 Toast.makeText(PassBackActivity.this, "修改成功请登录", Toast.LENGTH_SHORT).show();
                             }else{

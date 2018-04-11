@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#999999"
-    tools:context="com.zxwl.chinahappy.MainActivity">
+    tools:context="com.zxwl.chinahappy.Activity.LoginActivity">
     <RelativeLayout
         android:orientation="horizontal"
         android:background="#0c0c0c"
