@@ -56,6 +56,15 @@ public class TigerdataBean {
         private String xqq;
         private String xbar;
         private String xalarm;
+        private String Answer;
+
+        public String getAnswer() {
+            return Answer;
+        }
+
+        public void setAnswer(String Answer) {
+            this.Answer = Answer;
+        }
 
         public String getId() {
             return id;

@@ -99,7 +99,7 @@ public class MyFragment extends Fragment implements View.OnClickListener {
                             JSONArray datas = jsonObject.getJSONArray("datas");
                             String username = datas.getJSONObject(0).getString("username");
                             String money = datas.getJSONObject(0).getString("money");
-                            String branch = datas.getJSONObject(0).getString("branch");
+                            String branch = datas.getJSONObject(0).getString("integral");
                             mName.setText("用户名：" + username);
                             mMoney.setText("金钱：" + money);
                             mBranch.setText("积分：" + branch);
