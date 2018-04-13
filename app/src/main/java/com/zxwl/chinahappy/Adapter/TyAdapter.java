@@ -17,31 +17,31 @@ import java.util.List;
 public abstract class TyAdapter<T> extends BaseAdapter {
 
 
-        protected LayoutInflater mLayoutInflater;
-        protected Context mContext;
-        protected List<T> mData;
-        protected int mItemLayoutId;
+    protected LayoutInflater mLayoutInflater;
+    protected Context mContext;
+    protected List<T> mData;
+    protected int mItemLayoutId;
 
     public TyAdapter(Context mContext, List<T> mData, int mItemLayoutId) {
-            this.mContext = mContext;
-            this.mData = mData;
-            this.mItemLayoutId = mItemLayoutId;
-        }
+        this.mContext = mContext;
+        this.mData = mData;
+        this.mItemLayoutId = mItemLayoutId;
+    }
 
-        @Override
-        public int getCount() {
-            return mData == null ? 0 : mData.size();
-        }
+    @Override
+    public int getCount() {
+        return mData == null ? 0 : mData.size();
+    }
 
-        @Override
-        public T getItem(int i) {
-            return mData.get(i);
-        }
+    @Override
+    public T getItem(int i) {
+        return mData.get(i);
+    }
 
-        @Override
-        public long getItemId(int i) {
-            return i;
-        }
+    @Override
+    public long getItemId(int i) {
+        return i;
+    }
 
     public View getView(int i, View convertView, ViewGroup parent) {
         //实例化一个ViewHolder

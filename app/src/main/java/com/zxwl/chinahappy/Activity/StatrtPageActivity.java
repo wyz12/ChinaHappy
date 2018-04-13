@@ -32,7 +32,7 @@ public class StatrtPageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_statrt_page);
 
-        hann.postDelayed(runn,3000);
+        hann.postDelayed(runn,1000);
 
     }
 }

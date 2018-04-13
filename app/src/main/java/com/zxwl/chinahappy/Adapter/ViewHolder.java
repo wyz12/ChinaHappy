@@ -1,6 +1,7 @@
 package com.zxwl.chinahappy.Adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,6 +58,7 @@ public class ViewHolder {
      */
     public ViewHolder setTextView(int viewId, String text) {
         TextView view = getItemView(viewId);
+
         view.setText(text);
         return this;
     }

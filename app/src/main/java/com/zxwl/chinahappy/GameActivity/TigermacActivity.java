@@ -1,7 +1,10 @@
 package com.zxwl.chinahappy.GameActivity;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -12,12 +15,16 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.gson.Gson;
+import com.zxwl.chinahappy.Adapter.TyAdapter;
+import com.zxwl.chinahappy.Adapter.VpAdapter;
+import com.zxwl.chinahappy.Adapter.YHYZAdapter;
+import com.zxwl.chinahappy.Bean.TigerUserYzBean;
 import com.zxwl.chinahappy.Bean.TigerdataBean;
 import com.zxwl.chinahappy.R;
 import com.zxwl.chinahappy.Utlis.HttpApi;
 import com.zxwl.chinahappy.Utlis.HttpUtils;
+import com.zxwl.chinahappy.Utlis.ViewHolder;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,6 +39,8 @@ import okhttp3.Callback;
 import okhttp3.FormBody;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+
+
 
 public class TigermacActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -65,23 +74,76 @@ public class TigermacActivity extends AppCompatActivity implements View.OnClickL
                             Gson gson = new Gson();
                             TigerdataBean tigerdataBean = gson.fromJson(string, TigerdataBean.class);
                             String countdown = tigerdataBean.getDatas().get(0).getCountdown();
-                            String id = tigerdataBean.getDatas().get(0).getId();
+                            id = tigerdataBean.getDatas().get(0).getId();
                             String answer = tigerdataBean.getDatas().get(0).getAnswer();
+
+                            String xapple = tigerdataBean.getDatas().get(0).getXapple();
+                            String xorange = tigerdataBean.getDatas().get(0).getXorange();
+                            String xcoconut = tigerdataBean.getDatas().get(0).getXcoconut();
+                            String xwatermelons = tigerdataBean.getDatas().get(0).getXwatermelons();
+                            String xqq = tigerdataBean.getDatas().get(0).getXqq();
+                            String xstar = tigerdataBean.getDatas().get(0).getXstar();
+                            String xbar = tigerdataBean.getDatas().get(0).getXbar();
+                            String xalarm = tigerdataBean.getDatas().get(0).getXalarm();
+
+                            mWApple.setText("苹果\n"+xapple);
+                            mWOrange.setText("橘子\n"+xorange);
+                            mWCoconut.setText("柚子\n"+xcoconut);
+                            mWWatermelons.setText("西瓜\n"+xwatermelons);
+                            mW77.setText("七七\n"+xqq);
+                            mWStar.setText("星星\n"+xstar);
+                            mWBar.setText("酒\n"+xbar);
+                            mWAlarm.setText("铃铛\n"+xalarm);
+                            int i = Integer.parseInt(xapple) + Integer.parseInt(xorange) + Integer.parseInt(xcoconut) + Integer.parseInt(xwatermelons) + Integer.parseInt(xqq) + Integer.parseInt(xstar) + Integer.parseInt(xbar) + Integer.parseInt(xalarm);
+
+                            mWSun.setText("总金额\n"+i);
+
+
+
+
                             if("0".equals(countdown)){
                                 mTrainTime.setText("开奖中\n请等待");
+
+                                    mMoney500.setClickable(false);
+                                    mMoney500.setBackgroundResource(R.drawable.shape_yz_k);
+                                    mMoney100.setClickable(false);
+                                    mMoney100.setBackgroundResource(R.drawable.shape_yz_k);
+                                    mMoney50.setClickable(false);
+                                    mMoney50.setBackgroundResource(R.drawable.shape_yz_k);
+                                    mMoney10.setClickable(false);
+                                    mMoney10.setBackgroundResource(R.drawable.shape_yz_k);
+                                    mMoneyCon.setClickable(false);
+                                    mMoneyCon.setBackgroundResource(R.drawable.shape_yz_k);
+
 
                             }else{
 
                                 mTrainTime.setText("押注时间\n"+countdown);
                             }
-                            mTrainCode.setText(id);
+                            mTrainCode.setText("期号:"+id);
 
                             xxx = Integer.parseInt(answer);
                             if("1".equals(countdown)){
+                                mMoney500.setClickable(false);
+                                mMoney500.setBackgroundResource(R.drawable.shape_yz_k);
+                                mMoney100.setClickable(false);
+                                mMoney100.setBackgroundResource(R.drawable.shape_yz_k);
+                                mMoney50.setClickable(false);
+                                mMoney50.setBackgroundResource(R.drawable.shape_yz_k);
+                                mMoney10.setClickable(false);
+                                mMoney10.setBackgroundResource(R.drawable.shape_yz_k);
+                                mMoneyCon.setClickable(false);
+                                mMoneyCon.setBackgroundResource(R.drawable.shape_yz_k);
                                 yzjf=0;
                                 yzzjf=0;
                                 hann.postDelayed(runn,1000);
                             }
+                            if("30".equals(countdown)){
+                                ksyz();
+                                hquseryzxx();
+                            }
+
+
                         }
                     });
 
@@ -103,6 +165,7 @@ public class TigermacActivity extends AppCompatActivity implements View.OnClickL
 
                     if (y > 3) {
                         if (x == xxx) {
+                            tjbh();
                             imageViews.get(x).setBackgroundColor(i);
                             imageViews.get(13).setBackgroundResource(R.drawable.shape_gray_square_bg);
                             imageViews.get(14).setBackgroundResource(R.drawable.shape_gray_square_bg);
@@ -130,6 +193,8 @@ public class TigermacActivity extends AppCompatActivity implements View.OnClickL
                 case 1:
                     if (y > 3) {
                         if (x == xxx) {
+
+                            tjbh();
                             imageViews.get(x).setBackgroundColor(i);
                             imageViews.get(14).setBackgroundResource(R.drawable.shape_gray_square_bg);
                             imageViews.get(15).setBackgroundResource(R.drawable.shape_gray_square_bg);
@@ -156,6 +221,8 @@ public class TigermacActivity extends AppCompatActivity implements View.OnClickL
 
                     if (y > 3) {
                         if (x == xxx) {
+
+                            tjbh();
                             imageViews.get(x).setBackgroundColor(i);
                             imageViews.get(15).setBackgroundResource(R.drawable.shape_gray_square_bg);
                             imageViews.get(1).setBackgroundResource(R.drawable.shape_gray_square_bg);
@@ -182,6 +249,8 @@ public class TigermacActivity extends AppCompatActivity implements View.OnClickL
 
                     if (y > 3) {
                         if (x == xxx) {
+
+                            tjbh();
                             imageViews.get(x).setBackgroundColor(i);
                             imageViews.get(x - 1).setBackgroundResource(R.drawable.shape_gray_square_bg);
                             imageViews.get(x - 2).setBackgroundResource(R.drawable.shape_gray_square_bg);
@@ -208,6 +277,8 @@ public class TigermacActivity extends AppCompatActivity implements View.OnClickL
 
                     if (y > 3) {
                         if (x == xxx) {
+
+                            tjbh();
                             imageViews.get(x).setBackgroundColor(i);
                             imageViews.get(x - 1).setBackgroundResource(R.drawable.shape_gray_square_bg);
                             imageViews.get(x - 2).setBackgroundResource(R.drawable.shape_gray_square_bg);
@@ -234,6 +305,8 @@ public class TigermacActivity extends AppCompatActivity implements View.OnClickL
 
                     if (y > 3) {
                         if (x == xxx) {
+
+                            tjbh();
                             imageViews.get(x).setBackgroundColor(i);
                             imageViews.get(x - 1).setBackgroundResource(R.drawable.shape_gray_square_bg);
                             imageViews.get(x - 2).setBackgroundResource(R.drawable.shape_gray_square_bg);
@@ -260,6 +333,8 @@ public class TigermacActivity extends AppCompatActivity implements View.OnClickL
 
                     if (y > 3) {
                         if (x == xxx) {
+
+                            tjbh();
                             imageViews.get(x).setBackgroundColor(i);
                             imageViews.get(x - 1).setBackgroundResource(R.drawable.shape_gray_square_bg);
                             imageViews.get(x - 2).setBackgroundResource(R.drawable.shape_gray_square_bg);
@@ -286,6 +361,8 @@ public class TigermacActivity extends AppCompatActivity implements View.OnClickL
 
                     if (y > 3) {
                         if (x == xxx) {
+
+                            tjbh();
                             imageViews.get(x).setBackgroundColor(i);
                             imageViews.get(x - 1).setBackgroundResource(R.drawable.shape_gray_square_bg);
                             imageViews.get(x - 2).setBackgroundResource(R.drawable.shape_gray_square_bg);
@@ -312,6 +389,8 @@ public class TigermacActivity extends AppCompatActivity implements View.OnClickL
 
                     if (y > 3) {
                         if (x == xxx) {
+
+                            tjbh();
                             imageViews.get(x).setBackgroundColor(i);
                             imageViews.get(x - 1).setBackgroundResource(R.drawable.shape_gray_square_bg);
                             imageViews.get(x - 2).setBackgroundResource(R.drawable.shape_gray_square_bg);
@@ -338,6 +417,8 @@ public class TigermacActivity extends AppCompatActivity implements View.OnClickL
 
                     if (y > 3) {
                         if (x == xxx) {
+
+                            tjbh();
                             imageViews.get(x).setBackgroundColor(i);
                             imageViews.get(x - 1).setBackgroundResource(R.drawable.shape_gray_square_bg);
                             imageViews.get(x - 2).setBackgroundResource(R.drawable.shape_gray_square_bg);
@@ -364,6 +445,8 @@ public class TigermacActivity extends AppCompatActivity implements View.OnClickL
 
                     if (y > 3) {
                         if (x == xxx) {
+
+                            tjbh();
                             imageViews.get(x).setBackgroundColor(i);
                             imageViews.get(x - 1).setBackgroundResource(R.drawable.shape_gray_square_bg);
                             imageViews.get(x - 2).setBackgroundResource(R.drawable.shape_gray_square_bg);
@@ -390,6 +473,8 @@ public class TigermacActivity extends AppCompatActivity implements View.OnClickL
 
                     if (y > 3) {
                         if (x == xxx) {
+
+                            tjbh();
                             imageViews.get(x).setBackgroundColor(i);
                             imageViews.get(x - 1).setBackgroundResource(R.drawable.shape_gray_square_bg);
                             imageViews.get(x - 2).setBackgroundResource(R.drawable.shape_gray_square_bg);
@@ -416,6 +501,8 @@ public class TigermacActivity extends AppCompatActivity implements View.OnClickL
 
                     if (y > 3) {
                         if (x == xxx) {
+
+                            tjbh();
                             imageViews.get(x).setBackgroundColor(i);
                             imageViews.get(x - 1).setBackgroundResource(R.drawable.shape_gray_square_bg);
                             imageViews.get(x - 2).setBackgroundResource(R.drawable.shape_gray_square_bg);
@@ -442,6 +529,8 @@ public class TigermacActivity extends AppCompatActivity implements View.OnClickL
 
                     if (y > 3) {
                         if (x == xxx) {
+
+                            tjbh();
                             imageViews.get(x).setBackgroundColor(i);
                             imageViews.get(x - 1).setBackgroundResource(R.drawable.shape_gray_square_bg);
                             imageViews.get(x - 2).setBackgroundResource(R.drawable.shape_gray_square_bg);
@@ -467,6 +556,8 @@ public class TigermacActivity extends AppCompatActivity implements View.OnClickL
                 case 14:
                     if (y > 3) {
                         if (x == xxx) {
+
+                            tjbh();
                             imageViews.get(x).setBackgroundColor(i);
                             imageViews.get(x - 1).setBackgroundResource(R.drawable.shape_gray_square_bg);
                             imageViews.get(x - 2).setBackgroundResource(R.drawable.shape_gray_square_bg);
@@ -493,6 +584,8 @@ public class TigermacActivity extends AppCompatActivity implements View.OnClickL
 
                     if (y > 3) {
                         if (x == xxx) {
+
+                            tjbh();
                             imageViews.get(x).setBackgroundColor(i);
                             imageViews.get(x - 1).setBackgroundResource(R.drawable.shape_gray_square_bg);
                             imageViews.get(x - 2).setBackgroundResource(R.drawable.shape_gray_square_bg);
@@ -654,6 +747,7 @@ public class TigermacActivity extends AppCompatActivity implements View.OnClickL
     private ListView mListview;
     private String branch;
     private int i2;
+    private String id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -679,16 +773,36 @@ public class TigermacActivity extends AppCompatActivity implements View.OnClickL
         imageViews.add(mSAlarm);
         imageViews.add(mBAlarm);
         imageViews.add(mB77);
-        hqxx();
-//        xxx = 3;
-//        hann.postDelayed(runn,1000);
 
-        hann.postDelayed(runnn,100);
+
+        boolean wifiConnected = isNetworkConnected(this);
+        if(wifiConnected){
+            hqxx();
+            hquseryzxx();
+            hann.postDelayed(runnn,100);
+        }else{
+            Toast.makeText(this, "请链接网络", Toast.LENGTH_SHORT).show();
+
+
+        }
+
 
 
 
 
     }
+
+    public boolean isNetworkConnected(Context context) {
+             if (context != null) {
+                     ConnectivityManager mConnectivityManager = (ConnectivityManager) context
+                             .getSystemService(Context.CONNECTIVITY_SERVICE);
+                     NetworkInfo mNetworkInfo = mConnectivityManager.getActiveNetworkInfo();
+                     if (mNetworkInfo != null) {
+                             return mNetworkInfo.isAvailable();
+                         }
+                 }
+             return false;
+         }
 
     private void initView() {
 
@@ -765,433 +879,302 @@ public class TigermacActivity extends AppCompatActivity implements View.OnClickL
             default:
                 break;
             case R.id.money10:
-                yzjf=10;
+                if(Integer.parseInt(branch)-yzzjf>10){
+                    yzjf=10;
+                    mMoney10.setBackgroundResource(R.drawable.ic_launcher_background);
+                    if(Integer.parseInt(branch)-yzzjf<500){
+                        mMoney500.setBackgroundResource(R.drawable.shape_yz_k);
+                    }else{
+                        mMoney500.setBackgroundResource(R.drawable.shape_yz_mz);
+                    }
+                    if(Integer.parseInt(branch)-yzzjf<100){
+                        mMoney100.setBackgroundResource(R.drawable.shape_yz_k);
+                    }else{
+                        mMoney100.setBackgroundResource(R.drawable.shape_yz_mz);
+                    }
+                    if(Integer.parseInt(branch)-yzzjf<50){
+                        mMoney50.setBackgroundResource(R.drawable.shape_yz_k);
+                    }else{
+                        mMoney50.setBackgroundResource(R.drawable.shape_yz_mz);
+                    }
+
+                }else{
+                    yzjf=0;
+                    mMoney10.setClickable(false);
+                    mMoney10.setBackgroundResource(R.drawable.shape_yz_k);
+                    mMoney50.setClickable(false);
+                    mMoney50.setBackgroundResource(R.drawable.shape_yz_k);
+                    mMoney100.setClickable(false);
+                    mMoney100.setBackgroundResource(R.drawable.shape_yz_k);
+                    mMoney500.setClickable(false);
+                    mMoney500.setBackgroundResource(R.drawable.shape_yz_k);
+                    Toast.makeText(this, "积分不够请兑换", Toast.LENGTH_SHORT).show();
+                }
+
                 break;
             case R.id.money50:
-                yzjf=50;
+                if(Integer.parseInt(branch)-yzzjf>50){
+                    yzjf=50;
+                    mMoney10.setBackgroundResource(R.drawable.shape_yz_mz);
+                    mMoney50.setBackgroundResource(R.drawable.ic_launcher_background);
+                    if(Integer.parseInt(branch)-yzzjf<500){
+                        mMoney500.setBackgroundResource(R.drawable.shape_yz_k);
+                    }else{
+                        mMoney500.setBackgroundResource(R.drawable.shape_yz_mz);
+                    }
+                    if(Integer.parseInt(branch)-yzzjf<100){
+                        mMoney100.setBackgroundResource(R.drawable.shape_yz_k);
+                    }else{
+                        mMoney100.setBackgroundResource(R.drawable.shape_yz_mz);
+                    }
+                }else{
+                    yzjf=0;
+                    mMoney50.setClickable(false);
+                    mMoney50.setBackgroundResource(R.drawable.shape_yz_k);
+                    mMoney100.setClickable(false);
+                    mMoney100.setBackgroundResource(R.drawable.shape_yz_k);
+                    mMoney500.setClickable(false);
+                    mMoney500.setBackgroundResource(R.drawable.shape_yz_k);
+                    Toast.makeText(this, "积分不够请兑换", Toast.LENGTH_SHORT).show();
+                }
+
                 break;
             case R.id.money100:
-                yzjf=100;
+                if(Integer.parseInt(branch)-yzzjf>100){
+                    yzjf=100;
+                    mMoney10.setBackgroundResource(R.drawable.shape_yz_mz);
+                    mMoney50.setBackgroundResource(R.drawable.shape_yz_mz);
+                    mMoney100.setBackgroundResource(R.drawable.ic_launcher_background);
+                    if(Integer.parseInt(branch)-yzzjf<500){
+                        mMoney500.setBackgroundResource(R.drawable.shape_yz_k);
+                    }else{
+                        mMoney500.setBackgroundResource(R.drawable.shape_yz_mz);
+                    }
+
+
+
+                }else{
+
+                    yzjf=0;
+                    mMoney100.setClickable(false);
+                    mMoney100.setBackgroundResource(R.drawable.shape_yz_k);
+                    mMoney500.setClickable(false);
+                    mMoney500.setBackgroundResource(R.drawable.shape_yz_k);
+                    Toast.makeText(this, "积分不够请兑换", Toast.LENGTH_SHORT).show();
+                }
+
                 break;
             case R.id.money500:
-                yzjf=500;
+                if(Integer.parseInt(branch)-yzzjf>500){
+                    yzjf=500;
+                    mMoney10.setBackgroundResource(R.drawable.shape_yz_mz);
+                    mMoney50.setBackgroundResource(R.drawable.shape_yz_mz);
+                    mMoney100.setBackgroundResource(R.drawable.shape_yz_mz);
+                    mMoney500.setBackgroundResource(R.drawable.ic_launcher_background);
+
+                }else{
+                    yzjf=0;
+                    mMoney500.setClickable(false);
+                    mMoney500.setBackgroundResource(R.drawable.shape_yz_k);
+                    Toast.makeText(this, "积分不够请兑换", Toast.LENGTH_SHORT).show();
+                }
+
                 break;
             case R.id.explain:
+
                 break;
             case R.id.money_con:
+
+                tjyzxx();
+
+
+
+
                 break;
+
 
             case R.id.yzt_apple:
-
-                if(yzjf==0){
-                    Toast.makeText(this, "请选择押注金额", Toast.LENGTH_SHORT).show();
-                }else{
-                    String s = mWyzApple.getText().toString();
-                    int i = Integer.parseInt(s);
-                    yzzjf+=yzjf;
-                    int i1 = yzjf + i;
-                    mWyzApple.setText(i1+"");
-
-                }
-
-                try {
-                    int userbranch = Integer.parseInt(branch);
-                    int i = userbranch - yzzjf;
-
-
-                    mIntegral.setText("积分剩余：\n"+i);
-                    if(userbranch-yzzjf<500){
-                        mMoney500.setClickable(false);
-                        mMoney500.setBackgroundResource(R.drawable.shape_yz_k);
-                        yzjf=0;
-                    }else if(userbranch-yzzjf<100){
-                        mMoney100.setClickable(false);
-                        mMoney100.setBackgroundResource(R.drawable.shape_yz_k);
-                        yzjf=0;
-                    }else if(userbranch-yzzjf<50){
-                        mMoney50.setClickable(false);
-                        mMoney50.setBackgroundResource(R.drawable.shape_yz_k);
-                        yzjf=0;
-                    }else if(userbranch-yzzjf<10){
-                        mMoney10.setClickable(false);
-                        mMoney10.setBackgroundResource(R.drawable.shape_yz_k);
-                        yzjf=0;
-                    }else{
-                        mMoney500.setClickable(true);
-                        mMoney100.setClickable(true);
-                        mMoney50.setClickable(true);
-                        mMoney10.setClickable(true);
-                    }
-                }catch (Exception e){
-                    mMoney500.setClickable(false);
-                    mMoney100.setClickable(false);
-                    mMoney50.setClickable(false);
-                    mMoney10.setClickable(false);
-                    mMoney500.setBackgroundResource(R.drawable.shape_yz_k);
-                    mMoney100.setBackgroundResource(R.drawable.shape_yz_k);
-                    mMoney50.setBackgroundResource(R.drawable.shape_yz_k);
-                    mMoney10.setBackgroundResource(R.drawable.shape_yz_k);
-                }
-
-
+                yzpd(mWyzApple);
                 break;
             case R.id.yzt_orange:
-                if(yzjf==0){
-                    Toast.makeText(this, "请选择押注金额", Toast.LENGTH_SHORT).show();
-                }else{
-                    String s = mWyzOrange.getText().toString();
-                    int i = Integer.parseInt(s);
-                    yzzjf+=yzjf;
-                    int i1 = yzjf + i;
-                    mWyzOrange.setText(i1+"");
-                }
-                try {
-                    int userbranch = Integer.parseInt(branch);
-                    int i = userbranch - yzzjf;
-
-
-                    mIntegral.setText("积分剩余：\n"+i);
-                    if(userbranch-yzzjf<500){
-                        mMoney500.setClickable(false);
-                        mMoney500.setBackgroundResource(R.drawable.shape_yz_k);
-                        yzjf=0;
-                    }else if(userbranch-yzzjf<100){
-                        mMoney100.setClickable(false);
-                        mMoney100.setBackgroundResource(R.drawable.shape_yz_k);
-                        yzjf=0;
-                    }else if(userbranch-yzzjf<50){
-                        mMoney50.setClickable(false);
-                        mMoney50.setBackgroundResource(R.drawable.shape_yz_k);
-                        yzjf=0;
-                    }else if(userbranch-yzzjf<10){
-                        mMoney10.setClickable(false);
-                        mMoney10.setBackgroundResource(R.drawable.shape_yz_k);
-                        yzjf=0;
-                    }else{
-                        mMoney500.setClickable(true);
-                        mMoney100.setClickable(true);
-                        mMoney50.setClickable(true);
-                        mMoney10.setClickable(true);
-                    }
-                }catch (Exception e){
-                    mMoney500.setClickable(false);
-                    mMoney100.setClickable(false);
-                    mMoney50.setClickable(false);
-                    mMoney10.setClickable(false);
-                    mMoney500.setBackgroundResource(R.drawable.shape_yz_k);
-                    mMoney100.setBackgroundResource(R.drawable.shape_yz_k);
-                    mMoney50.setBackgroundResource(R.drawable.shape_yz_k);
-                    mMoney10.setBackgroundResource(R.drawable.shape_yz_k);
-                }
+                yzpd(mWyzOrange);
                 break;
             case R.id.yzt_watermelons:
-                if(yzjf==0){
-                    Toast.makeText(this, "请选择押注金额", Toast.LENGTH_SHORT).show();
-                }else{
-                    String s = mWyzWatermelons.getText().toString();
-                    int i = Integer.parseInt(s);
-                    yzzjf+=yzjf;
-                    int i1 = yzjf + i;
-                    mWyzWatermelons.setText(i1+"");
-                }
-                try {
-                    int userbranch = Integer.parseInt(branch);
-                    int i = userbranch - yzzjf;
-                    mIntegral.setText("积分剩余：\n"+i);
-                    if(userbranch-yzzjf<500){
-                        mMoney500.setClickable(false);
-                        mMoney500.setBackgroundResource(R.drawable.shape_yz_k);
-                        yzjf=0;
-                    }else if(userbranch-yzzjf<100){
-                        mMoney100.setClickable(false);
-                        mMoney100.setBackgroundResource(R.drawable.shape_yz_k);
-                        yzjf=0;
-                    }else if(userbranch-yzzjf<50){
-                        mMoney50.setClickable(false);
-                        mMoney50.setBackgroundResource(R.drawable.shape_yz_k);
-                        yzjf=0;
-                    }else if(userbranch-yzzjf<10){
-                        mMoney10.setClickable(false);
-                        mMoney10.setBackgroundResource(R.drawable.shape_yz_k);
-                        yzjf=0;
-                    }else{
-                        mMoney500.setClickable(true);
-                        mMoney100.setClickable(true);
-                        mMoney50.setClickable(true);
-                        mMoney10.setClickable(true);
-                    }
-                }catch (Exception e){
-                    mMoney500.setClickable(false);
-                    mMoney100.setClickable(false);
-                    mMoney50.setClickable(false);
-                    mMoney10.setClickable(false);
-                    mMoney500.setBackgroundResource(R.drawable.shape_yz_k);
-                    mMoney100.setBackgroundResource(R.drawable.shape_yz_k);
-                    mMoney50.setBackgroundResource(R.drawable.shape_yz_k);
-                    mMoney10.setBackgroundResource(R.drawable.shape_yz_k);
-                }
+                yzpd(mWyzWatermelons);
                 break;
             case R.id.yzt_coconut:
-                if(yzjf==0){
-                    Toast.makeText(this, "请选择押注金额", Toast.LENGTH_SHORT).show();
-                }else{
-                    String s = mWyzCoconut.getText().toString();
-                    int i = Integer.parseInt(s);
-                    yzzjf+=yzjf;
-                    int i1 = yzjf + i;
-                    mWyzCoconut.setText(i1+"");
-                }
-                try {
-                    int userbranch = Integer.parseInt(branch);
-                    int i = userbranch - yzzjf;
-                    mIntegral.setText("积分剩余：\n"+i);
-                    if(userbranch-yzzjf<500){
-                        mMoney500.setClickable(false);
-                        mMoney500.setBackgroundResource(R.drawable.shape_yz_k);
-                        yzjf=0;
-                    }else if(userbranch-yzzjf<100){
-                        mMoney100.setClickable(false);
-                        mMoney100.setBackgroundResource(R.drawable.shape_yz_k);
-                        yzjf=0;
-                    }else if(userbranch-yzzjf<50){
-                        mMoney50.setClickable(false);
-                        mMoney50.setBackgroundResource(R.drawable.shape_yz_k);
-                        yzjf=0;
-                    }else if(userbranch-yzzjf<10){
-                        mMoney10.setClickable(false);
-                        mMoney10.setBackgroundResource(R.drawable.shape_yz_k);
-                        yzjf=0;
-                    }else{
-                        mMoney500.setClickable(true);
-                        mMoney100.setClickable(true);
-                        mMoney50.setClickable(true);
-                        mMoney10.setClickable(true);
-                    }
-                }catch (Exception e){
-                    mMoney500.setClickable(false);
-                    mMoney100.setClickable(false);
-                    mMoney50.setClickable(false);
-                    mMoney10.setClickable(false);
-                    mMoney500.setBackgroundResource(R.drawable.shape_yz_k);
-                    mMoney100.setBackgroundResource(R.drawable.shape_yz_k);
-                    mMoney50.setBackgroundResource(R.drawable.shape_yz_k);
-                    mMoney10.setBackgroundResource(R.drawable.shape_yz_k);
-                }
+                yzpd(mWyzCoconut);
                 break;
             case R.id.yzt_77:
-                if(yzjf==0){
-                    Toast.makeText(this, "请选择押注金额", Toast.LENGTH_SHORT).show();
-                }else{
-                    String s = mWyzZ77.getText().toString();
-                    int i = Integer.parseInt(s);
-                    yzzjf+=yzjf;
-                    int i1 = yzjf + i;
-                    mWyzZ77.setText(i1+"");
-                }
-                try {
-                    int userbranch = Integer.parseInt(branch);
-                    int i = userbranch - yzzjf;
-                    mIntegral.setText("积分剩余：\n"+i);
-                    if(userbranch-yzzjf<500){
-                        mMoney500.setClickable(false);
-                        mMoney500.setBackgroundResource(R.drawable.shape_yz_k);
-                        yzjf=0;
-                    }else if(userbranch-yzzjf<100){
-                        mMoney100.setClickable(false);
-                        mMoney100.setBackgroundResource(R.drawable.shape_yz_k);
-                        yzjf=0;
-                    }else if(userbranch-yzzjf<50){
-                        mMoney50.setClickable(false);
-                        mMoney50.setBackgroundResource(R.drawable.shape_yz_k);
-                        yzjf=0;
-                    }else if(userbranch-yzzjf<10){
-                        mMoney10.setClickable(false);
-                        mMoney10.setBackgroundResource(R.drawable.shape_yz_k);
-                        yzjf=0;
-                    }else{
-                        mMoney500.setClickable(true);
-                        mMoney100.setClickable(true);
-                        mMoney50.setClickable(true);
-                        mMoney10.setClickable(true);
-                    }
-                }catch (Exception e){
-                    mMoney500.setClickable(false);
-                    mMoney100.setClickable(false);
-                    mMoney50.setClickable(false);
-                    mMoney10.setClickable(false);
-                    mMoney500.setBackgroundResource(R.drawable.shape_yz_k);
-                    mMoney100.setBackgroundResource(R.drawable.shape_yz_k);
-                    mMoney50.setBackgroundResource(R.drawable.shape_yz_k);
-                    mMoney10.setBackgroundResource(R.drawable.shape_yz_k);
-                }
+                yzpd(mWyzZ77);
                 break;
             case R.id.yzt_star:
-                if(yzjf==0){
-                    Toast.makeText(this, "请选择押注金额", Toast.LENGTH_SHORT).show();
-                }else{
-                    String s = mWyzStar.getText().toString();
-                    int i = Integer.parseInt(s);
-                    yzzjf+=yzjf;
-                    int i1 = yzjf + i;
-                    mWyzStar.setText(i1+"");
-                }
-                try {
-                    int userbranch = Integer.parseInt(branch);
-                    int i = userbranch - yzzjf;
-                    mIntegral.setText("积分剩余：\n"+i);
-                    if(userbranch-yzzjf<500){
-                        mMoney500.setClickable(false);
-                        mMoney500.setBackgroundResource(R.drawable.shape_yz_k);
-                        yzjf=0;
-                    }else if(userbranch-yzzjf<100){
-                        mMoney100.setClickable(false);
-                        mMoney100.setBackgroundResource(R.drawable.shape_yz_k);
-                        yzjf=0;
-                    }else if(userbranch-yzzjf<50){
-                        mMoney50.setClickable(false);
-                        mMoney50.setBackgroundResource(R.drawable.shape_yz_k);
-                        yzjf=0;
-                    }else if(userbranch-yzzjf<10){
-                        mMoney10.setClickable(false);
-                        mMoney10.setBackgroundResource(R.drawable.shape_yz_k);
-                        yzjf=0;
-                    }else{
-                        mMoney500.setClickable(true);
-                        mMoney100.setClickable(true);
-                        mMoney50.setClickable(true);
-                        mMoney10.setClickable(true);
-                    }   if(userbranch-yzzjf<500){
-                        mMoney500.setClickable(false);
-                        mMoney500.setBackgroundResource(R.drawable.shape_yz_k);
-                        yzjf=0;
-                    }else if(userbranch-yzzjf<100){
-                        mMoney100.setClickable(false);
-                        mMoney100.setBackgroundResource(R.drawable.shape_yz_k);
-                        yzjf=0;
-                    }else if(userbranch-yzzjf<50){
-                        mMoney50.setClickable(false);
-                        mMoney50.setBackgroundResource(R.drawable.shape_yz_k);
-                        yzjf=0;
-                    }else if(userbranch-yzzjf<10){
-                        mMoney10.setClickable(false);
-                        mMoney10.setBackgroundResource(R.drawable.shape_yz_k);
-                        yzjf=0;
-                    }else{
-                        mMoney500.setClickable(true);
-                        mMoney100.setClickable(true);
-                        mMoney50.setClickable(true);
-                        mMoney10.setClickable(true);
-                    }
-                }catch (Exception e){
-                    mMoney500.setClickable(false);
-                    mMoney100.setClickable(false);
-                    mMoney50.setClickable(false);
-                    mMoney10.setClickable(false);
-                    mMoney500.setBackgroundResource(R.drawable.shape_yz_k);
-                    mMoney100.setBackgroundResource(R.drawable.shape_yz_k);
-                    mMoney50.setBackgroundResource(R.drawable.shape_yz_k);
-                    mMoney10.setBackgroundResource(R.drawable.shape_yz_k);
-                }
+                yzpd(mWyzStar);
                 break;
             case R.id.yzt_alarm:
-                if(yzjf==0){
-                    Toast.makeText(this, "请选择押注金额", Toast.LENGTH_SHORT).show();
-                }else{
-                    String s = mWyzAlarm.getText().toString();
-                    int i = Integer.parseInt(s);
-                    yzzjf+=yzjf;
-                    int i1 = yzjf + i;
-                    mWyzAlarm.setText(i1+"");
-                }
-                try {
-                    int userbranch = Integer.parseInt(branch);
-                    int i = userbranch - yzzjf;
-                    mIntegral.setText("积分剩余：\n"+i);
-                    if(userbranch-yzzjf<500){
-                        mMoney500.setClickable(false);
-                        mMoney500.setBackgroundResource(R.drawable.shape_yz_k);
-                        yzjf=0;
-                    }else if(userbranch-yzzjf<100){
-                        mMoney100.setClickable(false);
-                        mMoney100.setBackgroundResource(R.drawable.shape_yz_k);
-                        yzjf=0;
-                    }else if(userbranch-yzzjf<50){
-                        mMoney50.setClickable(false);
-                        mMoney50.setBackgroundResource(R.drawable.shape_yz_k);
-                        yzjf=0;
-                    }else if(userbranch-yzzjf<10){
-                        mMoney10.setClickable(false);
-                        mMoney10.setBackgroundResource(R.drawable.shape_yz_k);
-                        yzjf=0;
-                    }else{
-                        mMoney500.setClickable(true);
-                        mMoney100.setClickable(true);
-                        mMoney50.setClickable(true);
-                        mMoney10.setClickable(true);
-                    }
-                }catch (Exception e){
-                    mMoney500.setClickable(false);
-                    mMoney100.setClickable(false);
-                    mMoney50.setClickable(false);
-                    mMoney10.setClickable(false);
-                    mMoney500.setBackgroundResource(R.drawable.shape_yz_k);
-                    mMoney100.setBackgroundResource(R.drawable.shape_yz_k);
-                    mMoney50.setBackgroundResource(R.drawable.shape_yz_k);
-                    mMoney10.setBackgroundResource(R.drawable.shape_yz_k);
-                }
+                yzpd(mWyzAlarm);
                 break;
             case R.id.yzt_bar:
-                if(yzjf==0){
-                    Toast.makeText(this, "请选择押注金额", Toast.LENGTH_SHORT).show();
-                }else{
-                    String s = mWyzBar.getText().toString();
-                    int i = Integer.parseInt(s);
-                    yzzjf+=yzjf;
-                    int i1 = yzjf + i;
-                    mWyzBar.setText(i1+"");
-                }
-                try {
-                    int userbranch = Integer.parseInt(branch);
-                    int i = userbranch - yzzjf;
-                    mIntegral.setText("积分剩余：\n"+i);
-                    if(userbranch-yzzjf<500){
-                        mMoney500.setClickable(false);
-                        mMoney500.setBackgroundResource(R.drawable.shape_yz_k);
-                        yzjf=0;
-                    }else if(userbranch-yzzjf<100){
-                        mMoney100.setClickable(false);
-                        mMoney100.setBackgroundResource(R.drawable.shape_yz_k);
-                        yzjf=0;
-                    }else if(userbranch-yzzjf<50){
-                        mMoney50.setClickable(false);
-                        mMoney50.setBackgroundResource(R.drawable.shape_yz_k);
-                        yzjf=0;
-                    }else if(userbranch-yzzjf<10){
-                        mMoney10.setClickable(false);
-                        mMoney10.setBackgroundResource(R.drawable.shape_yz_k);
-                        yzjf=0;
-                    }else{
-                        mMoney500.setClickable(true);
-                        mMoney100.setClickable(true);
-                        mMoney50.setClickable(true);
-                        mMoney10.setClickable(true);
-                    }
-                }catch (Exception e){
-                    mMoney500.setClickable(false);
-                    mMoney100.setClickable(false);
-                    mMoney50.setClickable(false);
-                    mMoney10.setClickable(false);
-                    mMoney500.setBackgroundResource(R.drawable.shape_yz_k);
-                    mMoney100.setBackgroundResource(R.drawable.shape_yz_k);
-                    mMoney50.setBackgroundResource(R.drawable.shape_yz_k);
-                    mMoney10.setBackgroundResource(R.drawable.shape_yz_k);
-                }
+                yzpd(mWyzBar);
                 break;
 
 
         }
     }
 
+    private void yzpd(TextView name) {
+        if(yzjf==0){
+            if (Integer.parseInt(branch)<10){
+                Toast.makeText(this, "积分不够请兑换", Toast.LENGTH_SHORT).show();
+            }else {
+                Toast.makeText(this, "请选择押注金额", Toast.LENGTH_SHORT).show();
+            }
+
+        }else{
+            String s = name.getText().toString();
+            int i = Integer.parseInt(s);
+            yzzjf+=yzjf;
+            int i1 = yzjf + i;
+            name.setText(i1+"");
+
+        }
+        try {
+            int userbranch = Integer.parseInt(branch);
+            int i = userbranch - yzzjf;
+
+            mIntegral.setText("积分剩余:\n"+i);
+       if(userbranch-yzzjf<=10){
+                mMoney500.setClickable(false);
+                mMoney500.setBackgroundResource(R.drawable.shape_yz_k);
+                mMoney100.setClickable(false);
+                mMoney100.setBackgroundResource(R.drawable.shape_yz_k);
+                mMoney50.setClickable(false);
+                mMoney50.setBackgroundResource(R.drawable.shape_yz_k);
+                mMoney10.setClickable(false);
+                mMoney10.setBackgroundResource(R.drawable.shape_yz_k);
+                 yzjf=10;
+            } if(userbranch-yzzjf<50){
+                mMoney500.setClickable(false);
+                mMoney500.setBackgroundResource(R.drawable.shape_yz_k);
+                mMoney100.setClickable(false);
+                mMoney100.setBackgroundResource(R.drawable.shape_yz_k);
+                mMoney50.setClickable(false);
+                mMoney50.setBackgroundResource(R.drawable.shape_yz_k);
+                yzjf=10;
+            }else if(userbranch-yzzjf<100){
+                mMoney500.setClickable(false);
+                mMoney500.setBackgroundResource(R.drawable.shape_yz_k);
+                mMoney100.setClickable(false);
+                mMoney100.setBackgroundResource(R.drawable.shape_yz_k);
+                yzjf=50;
+            }else if(userbranch-yzzjf<500){
+                mMoney500.setClickable(false);
+                mMoney500.setBackgroundResource(R.drawable.shape_yz_k);
+                yzjf=100;
+            }
+        }catch (Exception e){
+            mMoney500.setClickable(false);
+            mMoney100.setClickable(false);
+            mMoney50.setClickable(false);
+            mMoney10.setClickable(false);
+            mMoney500.setBackgroundResource(R.drawable.shape_yz_k);
+            mMoney100.setBackgroundResource(R.drawable.shape_yz_k);
+            mMoney50.setBackgroundResource(R.drawable.shape_yz_k);
+            mMoney10.setBackgroundResource(R.drawable.shape_yz_k);
+        }
+    }
+
+    private void tjyzxx() {
+        SharedPreferences userData =getSharedPreferences("UserData", MODE_PRIVATE);
+        String phone = userData.getString("phone", null);
+        String s1 = mWyzApple.getText().toString();
+        String s2 = mWyzOrange.getText().toString();
+        String s3 = mWyzCoconut.getText().toString();
+        String s4 = mWyzWatermelons.getText().toString();
+        String s5 = mWyzZ77.getText().toString();
+        String s6 = mWyzStar.getText().toString();
+        String s7 = mWyzBar.getText().toString();
+        String s8 = mWyzAlarm.getText().toString();
+        RequestBody body = new FormBody.Builder()
+                .add("action", "TigeruserData")
+                .add("phone", phone)
+                .add("qh", id)
+                .add("apple", s1)
+                .add("dorange", s2)
+                .add("coconut", s3)
+                .add("watermelons", s4)
+                .add("star", s6)
+                .add("qq", s5)
+                .add("bar", s7)
+                .add("alarm", s8)
+                .build();
+        HttpUtils.getInstance().sendPost(HttpApi.ADDRESS, body, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Toast.makeText(TigermacActivity.this, "网络不好请等待", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                final String string = response.body().string();
+                Log.e("TTAAAT",string);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            JSONObject jsonObject = new JSONObject(string);
+                            boolean register_result = jsonObject.getBoolean("register_result");
+                            if(register_result){
+                                Toast.makeText(TigermacActivity.this, "下注提交成功,请等待开奖", Toast.LENGTH_SHORT).show();
+                                mMoney500.setClickable(false);
+                                mMoney500.setBackgroundResource(R.drawable.shape_yz_k);
+                                mMoney100.setClickable(false);
+                                mMoney100.setBackgroundResource(R.drawable.shape_yz_k);
+                                mMoney50.setClickable(false);
+                                mMoney50.setBackgroundResource(R.drawable.shape_yz_k);
+                                mMoney10.setClickable(false);
+                                mMoney10.setBackgroundResource(R.drawable.shape_yz_k);
+                                mMoneyCon.setClickable(false);
+                                mMoneyCon.setBackgroundResource(R.drawable.shape_yz_k);
+                                yzjf=0;
+                                yzzjf=0;
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+
+
+
+            }
+        });
+    }
+
+    private void tjbh() {
+        y = 0;
+        hqxx();
+    }
+    private void ksyz() {
+        mMoney500.setClickable(true);
+        mMoney500.setBackgroundResource(R.drawable.shape_yz_mz);
+        mMoney100.setClickable(true);
+        mMoney100.setBackgroundResource(R.drawable.shape_yz_mz);
+        mMoney50.setClickable(true);
+        mMoney50.setBackgroundResource(R.drawable.shape_yz_mz);
+        mMoney10.setClickable(true);
+        mMoney10.setBackgroundResource(R.drawable.shape_yz_mz);
+        mMoneyCon.setClickable(true);
+        mMoneyCon.setBackgroundResource(R.drawable.shape_yz_mz);
+        mWyzApple.setText("0");
+        mWyzOrange.setText("0");
+        mWyzCoconut.setText("0");
+        mWyzWatermelons.setText("0");
+        mWyzZ77.setText("0");
+        mWyzStar.setText("0");
+        mWyzBar.setText("0");
+        mWyzAlarm.setText("0");
+    }
 
     private void hqxx() {
         SharedPreferences userData =getSharedPreferences("UserData", MODE_PRIVATE);
@@ -1234,5 +1217,51 @@ public class TigermacActivity extends AppCompatActivity implements View.OnClickL
 
             }
         });
+    }
+
+
+    private void hquseryzxx() {
+
+        RequestBody body = new FormBody.Builder()
+                .add("action", "TigerAnswerData")
+                .build();
+        HttpUtils.getInstance().sendPost(HttpApi.ADDRESS, body, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Toast.makeText(TigermacActivity.this, "网络不好请等待", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                final String string = response.body().string();
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        Gson gson = new Gson();
+                        TigerUserYzBean tigerUserYzBean = gson.fromJson(string, TigerUserYzBean.class);
+                        List<TigerUserYzBean.DatasBean> datas = tigerUserYzBean.getDatas();
+                        YHYZAdapter yhyzAdapter = new YHYZAdapter(TigermacActivity.this, datas);
+                        mListview.setAdapter(yhyzAdapter);
+
+
+
+
+
+
+                    }
+                });
+
+
+            }
+        });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        hann.removeCallbacks(runn);
+        hann.removeCallbacks(runnn);
     }
 }

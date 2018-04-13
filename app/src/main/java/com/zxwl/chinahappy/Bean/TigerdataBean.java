@@ -65,7 +65,6 @@ public class TigerdataBean {
         public void setAnswer(String Answer) {
             this.Answer = Answer;
         }
-
         public String getId() {
             return id;
         }
