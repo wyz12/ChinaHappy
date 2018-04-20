@@ -52,9 +52,34 @@
             android:layout_marginRight="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+        <EditText
+            android:id="@+id/ecsrk"
+            android:hint="请输入整数金额"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+            <LinearLayout
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <Button
+                    android:id="@+id/ecintegral"
+                    android:text="兑换积分"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <Button
+                    android:id="@+id/ecmoney"
+                    android:text="兑换金币"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
         <Button
             android:id="@+id/signout"
             android:text="退出登录"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/jiaoyixq"
+            android:text="交易详情"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>

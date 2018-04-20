@@ -75,8 +75,9 @@ public class TigermacActivity extends AppCompatActivity implements View.OnClickL
                             TigerdataBean tigerdataBean = gson.fromJson(string, TigerdataBean.class);
                             String countdown = tigerdataBean.getDatas().get(0).getCountdown();
                             id = tigerdataBean.getDatas().get(0).getId();
-                            String answer = tigerdataBean.getDatas().get(0).getAnswer();
 
+                            hqzt(id);
+                            String answer = tigerdataBean.getDatas().get(0).getAnswer();
                             String xapple = tigerdataBean.getDatas().get(0).getXapple();
                             String xorange = tigerdataBean.getDatas().get(0).getXorange();
                             String xcoconut = tigerdataBean.getDatas().get(0).getXcoconut();
@@ -198,7 +199,7 @@ public class TigermacActivity extends AppCompatActivity implements View.OnClickL
                             imageViews.get(x).setBackgroundColor(i);
                             imageViews.get(14).setBackgroundResource(R.drawable.shape_gray_square_bg);
                             imageViews.get(15).setBackgroundResource(R.drawable.shape_gray_square_bg);
-                            imageViews.get(1).setBackgroundResource(R.drawable.shape_gray_square_bg);
+                            imageViews.get(0).setBackgroundResource(R.drawable.shape_gray_square_bg);
                             return;
                         }
                     }
@@ -1206,6 +1207,61 @@ public class TigermacActivity extends AppCompatActivity implements View.OnClickL
                             mIntegral.setText("积分剩余：\n"+ branch);
                             Log.e("TTT",username+money+ branch);
 
+
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+
+
+            }
+        });
+    }
+
+
+
+
+    private void hqzt(String qh) {
+        SharedPreferences userData =getSharedPreferences("UserData", MODE_PRIVATE);
+        String phone = userData.getString("phone", null);
+        RequestBody body = new FormBody.Builder()
+                .add("action", "JdTigeruseryz")
+                .add("phone", phone)
+                .add("qh", qh)
+                .build();
+        HttpUtils.getInstance().sendPost(HttpApi.ADDRESS, body, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Toast.makeText(TigermacActivity.this, "网络不好请等待", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                final String string = response.body().string();
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            JSONObject jsonObject = new JSONObject(string);
+
+                            boolean register_result = jsonObject.getBoolean("register_result");
+                            if(!register_result){
+                                mMoney500.setClickable(false);
+                                mMoney500.setBackgroundResource(R.drawable.shape_yz_k);
+                                mMoney100.setClickable(false);
+                                mMoney100.setBackgroundResource(R.drawable.shape_yz_k);
+                                mMoney50.setClickable(false);
+                                mMoney50.setBackgroundResource(R.drawable.shape_yz_k);
+                                mMoney10.setClickable(false);
+                                mMoney10.setBackgroundResource(R.drawable.shape_yz_k);
+                                mMoneyCon.setClickable(false);
+                                mMoneyCon.setBackgroundResource(R.drawable.shape_yz_k);
+                                yzjf=0;
+                                yzzjf=0;
+                            }
 
 
                         } catch (JSONException e) {

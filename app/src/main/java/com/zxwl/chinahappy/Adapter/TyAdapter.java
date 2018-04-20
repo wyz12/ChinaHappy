@@ -28,6 +28,7 @@ public abstract class TyAdapter<T> extends BaseAdapter {
         this.mItemLayoutId = mItemLayoutId;
     }
 
+
     @Override
     public int getCount() {
         return mData == null ? 0 : mData.size();
